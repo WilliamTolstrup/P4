@@ -1,5 +1,7 @@
 clear;clc; close all
 
+%% THIS FILE IS OLD. GO GET THE NEW VERSION
+
 fs = 250;            % Hz sampling frequency, nyquist frequency is fs/2
 ts = 1/fs;           % Sampling period
 t_rec = 10;          % Recording time in seconds NOTE give a number that can be divide by 2, see indexes below
