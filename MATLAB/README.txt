@@ -3,7 +3,3 @@ Be aware that specific toolboxes are needed to make each file work. Especially t
 Installation can be found here: http://psychtoolbox.org/download
 Beginner tutorials can be found here: http://peterscarfe.com/ptbtutorials.html
 Be aware that the documentation for the toolbox is not great.
-
-Artificial-Signal-FFT.m is the file for artificial signals in MATLAB
-
-Buffer_of_real_signal_compressed.mp4 is a video of the real captured EEG signals being processed with FFTs in real time.
