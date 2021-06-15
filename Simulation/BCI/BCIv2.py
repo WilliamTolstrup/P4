@@ -3,13 +3,19 @@ from pyautogui import press
 import pyautogui
 import time
 
+from robolink import *    # API to communicate with RoboDK
+from robodk import *      # basic matrix operations
+from msvcrt import getch
+
+RDK = Robolink()
+
+robot = RDK.Item('Kinova Gen3 6DOF NoV', ITEM_TYPE_ROBOT)
+
 height = 1080
 width = 1920
 
 labels = []
 key = ''
-
-box1Pressed = 0
 
 root = tk.Tk()
 root.title('BCI')
@@ -20,7 +26,6 @@ canvas = tk.Canvas(root, height=height, width=width)
 canvas.pack()
 frame = tk.Frame(root, bg='black')
 frame.place(relwidth=1, relheight=1)
-keyPressed = 0
 
 root.bind('<Escape>', lambda e: root.destroy())
 
@@ -33,7 +38,7 @@ C = 0
 
 gripper = 'closed'
 
-pyautogui.moveTo(1920/2, 100)
+pyautogui.moveTo(1920/2, 300)
 
 def reset():
     global box1
@@ -57,7 +62,6 @@ while True:
         label = tk.Label(frame, text=box1, bg='red', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=286, y=150, width=472, height=200)
         labels.append(label)
-        box1Pressed = 1
         if box1 == 'XYZ+':
             box1 = 'X + 1'
             box2 = 'Y + 1'
@@ -74,12 +78,11 @@ while True:
             A = A - 1
         root.update()
         time.sleep(0.1)
-        pyautogui.moveTo(1920/2, 100)
+        pyautogui.moveTo(1920/2, 300)
     else:
         label = tk.Label(frame, text=box1, bg='white', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=286, y=150, width=472, height=200)
         labels.append(label)
-        box1Pressed = 0
 
 
     if (1634 - 236) < mousePos[0] < (1634 + 236) and (150 - 100) < mousePos[1] < (150 + 100):
@@ -102,7 +105,7 @@ while True:
             B = B - 1
         root.update()
         time.sleep(0.1)
-        pyautogui.moveTo(1920/2, 100)
+        pyautogui.moveTo(1920/2, 300)
     else:
         label = tk.Label(frame, text=box2, bg='white', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=1634, y=150, width=472, height=200)
@@ -125,17 +128,17 @@ while True:
             A = 0
             B = 0
             C = 0
+            robot.setJoints([0,0,90,0,0,0]) 
 
 
         root.update()
         time.sleep(0.1)
-        pyautogui.moveTo(1920 / 2, 100)
+        pyautogui.moveTo(1920/2, 300)
 
     else:
         label = tk.Label(frame, text=box3, bg='white', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=960, y=540, width=472, height=200)
         labels.append(label)
-        keyPressed = 0
 
 
     if (268 - 236) < mousePos[0] < (286 + 236) and (930 - 100) < mousePos[1] < (930 + 100):
@@ -158,12 +161,11 @@ while True:
             C = C - 1
         root.update()
         time.sleep(0.1)
-        pyautogui.moveTo(1920 / 2, 100)
+        pyautogui.moveTo(1920/2, 300)
     else:
         label = tk.Label(frame, text=box4, bg='white', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=286, y=930, width=472, height=200)
         labels.append(label)
-        keyPressed = 0
 
 
     if (1634 - 236) < mousePos[0] < (1634 + 236) and (930 - 100) < mousePos[1] < (930 + 100):
@@ -181,12 +183,11 @@ while True:
             reset()
         root.update()
         time.sleep(0.1)
-        pyautogui.moveTo(1920 / 2, 100)
+        pyautogui.moveTo(1920/2, 300)
     else:
         label = tk.Label(frame, text=box5, bg='white', fg='black', font=("Arial", 50, "bold"), bd=0)
         label.place(anchor='c', x=1634, y=930, width=472, height=200)
         labels.append(label)
-        keyPressed = 0
 
     position = 'X:' + str(X) + '  Y:' + str(Y) + '  Z:' + str(Z) + '  A:' + str(A) + '  B:' + str(B) + '  C:' + str(C)
 
@@ -200,5 +201,8 @@ while True:
 
     root.update()
 
+    robot.setJoints([X,Y,Z,A,B,C])
+
     for label in labels:
         label.destroy()
+
